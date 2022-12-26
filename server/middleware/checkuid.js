@@ -8,6 +8,7 @@ export default io => {
     if (filteredUid.length >= 16 && filteredUid.length <= 100) {
       // Just to be extra sure, probably not necessary
       socket.userid = filteredUid;
+      console.log(socket.userid);
       next();
     } else {
       next(new Error("Invalid UID"));

@@ -2,7 +2,7 @@ import verifyNick from "../utils/verifynick.js";
 import genRandom from "../utils/randomgen.js";
 import {roomJoin} from "./joinroomhandler.js";
 
-const roomCreate = (io, socket, haspassword, nickname, callback) => {
+const roomCreate = (io, socket, haspassword, nickname, userRole, callback) => {
   if (!verifyNick(nickname)) return callback({status: "error", message: "Invalid nickname"});
 
   const room = genRandom(4, io.sockets.adapter.rooms); // random 4 letter room string, which doesn't already exist
@@ -16,7 +16,7 @@ const roomCreate = (io, socket, haspassword, nickname, callback) => {
   }
 
   process.rooms.set(room, {password: password, messages: []}); // initialize room with no messages
-  return roomJoin(io, socket, room, password, nickname, callback); // now can directly call roomJoin, as room is created in process.rooms
+  return roomJoin(io, socket, room, password, nickname, userRole, callback); // now can directly call roomJoin, as room is created in process.rooms
 };
 
 const createRoomHandler = (io, socket) => {

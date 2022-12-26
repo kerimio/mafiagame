@@ -15,6 +15,7 @@ const getUserId = () => {
   return userid;
 };
 
+
 export const socket = io(ENDPOINT, {
   auth: {userid: getUserId()},
   reconnection: false,
@@ -28,14 +29,7 @@ socket.on("connect_error", err => {
     localStorage.removeItem("userid");
     socket.auth.userid = getUserId;
     socket.connect();
-  } else if (err.message === "Duplicate") {
-    // User opened client in another tab (probably, I think)
-    toast.error("Invalid session, already connected in a different tab", {
-      autoClose: false,
-      closeOnClick: false,
-      closeButton: false,
-    });
-  } else {
+  }  else {
     // Any other reason
     console.log(err);
     toast.error("Unable to reach server", {autoClose: false, closeOnClick: false, closeButton: false});

@@ -12,6 +12,7 @@ const messageReceived = (io, socket, message, callback) => {
     sender: client.nickname,
     timesent: Date.now(),
     userid: socket.userid,
+    userRole: socket.userRole
   };
   const messages = process.rooms.get(client.room).messages;
   messages.push(messageObject);

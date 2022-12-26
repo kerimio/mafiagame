@@ -5,18 +5,22 @@ import {useState} from "react";
 import {toast} from "react-toastify";
 import {FlexCardGlass, IndicatorButton, SliderCheckBox, TextInputGlass} from "../components/components";
 import {useNavigate} from "react-router-dom";
+import rolecrate from "../../../server/utils/rolecreate.js";
 
 const MainmenuView = () => {
   const socket = useContext(SocketContext);
   const navigate = useNavigate();
   let hasPass = true;
   let [activebtn, setActivebtn] = useState("join");
+  const userRole = rolecrate();
+  if (userRole)
 
   useEffect(() => {
-    const [nickname, room, roompass] = [
+    const [nickname, room, userRole,roompass] = [
       // Last used nickname, room
       localStorage.getItem("nickname"),
       localStorage.getItem("room"),
+      localStorage.getItem("userRole"),
       localStorage.getItem("roompass") || "",
     ];
     if (nickname) document.getElementById("nickname").value = nickname;
@@ -40,19 +44,21 @@ const MainmenuView = () => {
       localStorage.setItem("nickname", res.nickname);
       localStorage.setItem("room", res.room);
       localStorage.setItem("roompass", res.password);
+      localStorage.setItem("userRole", res.userRole);
     }
   };
 
   const createRoom = () => {
     const nickname = document.getElementById("nickname").value;
-    socket.emit("room:create", hasPass, nickname, roomJoinedCallback);
+    socket.emit("room:create", hasPass, nickname, userRole, roomJoinedCallback);
   };
+
 
   const joinRoom = () => {
     const room = document.getElementById("room").value;
     const password = document.getElementById("roompass").value;
     const nickname = document.getElementById("nickname").value;
-    socket.emit("room:join", room, password, nickname, roomJoinedCallback);
+    socket.emit("room:join", room, password, nickname,userRole, roomJoinedCallback);
   };
 
   return (

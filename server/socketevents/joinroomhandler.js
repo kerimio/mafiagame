@@ -1,6 +1,6 @@
 import verifyNick from "../utils/verifynick.js";
 
-const roomJoin = (io, socket, room, password, nickname, callback) => {
+const roomJoin = (io, socket, room, password, nickname, userRole, callback) => {
   if (!verifyNick(nickname)) return callback({status: "error", message: "Invalid nickname"});
 
   if (!process.rooms.has(room)) return callback({status: "error", message: "Room does not exist"});
@@ -13,9 +13,11 @@ const roomJoin = (io, socket, room, password, nickname, callback) => {
   const client = process.clients.get(socket.userid);
   client.room = room;
   client.nickname = nickname;
+  client.userRole = userRole
   socket.join(room);
-  callback({status: "ok", nickname, room, password});
+  callback({status: "ok", nickname, room,userRole, password});
 };
+
 
 const joinRoomHandler = (io, socket) => {
   socket.on("room:join", (...args) => roomJoin(io, socket, ...args));

@@ -7,7 +7,9 @@ const userDataHandler = (io, socket) => {
         client.room,
         process.rooms.get(client.room).password,
         client.nickname,
-        process.rooms.get(client.room).messages
+        client.userRole,
+        process.rooms.get(client.room).messages,
+        console.log(client)
       );
     return callback();
   });

@@ -6,3 +6,4 @@ export default sid => {
   }
   return false;
 };
+
